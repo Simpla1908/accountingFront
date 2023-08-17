@@ -6,6 +6,8 @@ const API_ROUTES = {
   CREER_ENTREPRISE: `${API_BASE_URL}/entreprises/`,
   LOGIN: `${API_BASE_URL}/utilisateur/login/`,
   LISTE_UTILISATEURS: `${API_BASE_URL}/utilisateurs_entreprise/`,
+  LISTE_GROUPES: `${API_BASE_URL}/groups_entreprise/`,
+
 
 
  

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pagination, Form ,Button} from "react-bootstrap";
 import { BsPencilSquare,BsTrash } from 'react-icons/bs'; // Import de l'icône
+import { Link } from 'react-router-dom';
+
 
 import API_ROUTES from "../../apiConfig";
 // Récupérer la chaîne JSON du localStorage sous la clé "userData"
@@ -30,7 +32,7 @@ const ListeUtilisateurs = () => {
       };
 
       const response = await axios.get(
-        API_ROUTES.LISTE_UTILISATEURS + storedUserData.entreprise_id,
+        `${API_ROUTES.LISTE_UTILISATEURS}${storedUserData.entreprise_id}`,
         config
       );
       console.log(response.data);
@@ -86,12 +88,13 @@ const ListeUtilisateurs = () => {
             </div>
             <div className="d-flex">
               <div className="justify-content-center">
-                <button
+                < Link
                   type="button"
                   className="btn btn-primary btn-icon-text my-2 me-2"
+                  to="/ajouter-utilisateur"
                 >
-                  <i className="fe fe-plus me-2"></i> Ajouter
-                </button>
+                  <i className="fe fe-plus-circle me-2"></i>Ajouter
+                </Link>
                 {/* <button type="button" className="btn btn-white btn-icon-text my-2 me-2">
                   <i className="fe fe-filter me-2"></i> Filtrer
                 </button> 

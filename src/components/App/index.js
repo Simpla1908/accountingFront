@@ -3,6 +3,7 @@ import Signup from '../Signup';
 import Login from '../Login';
 import Dashboard from '../Dashboard';
 import Utilisateurs from '../Utilisateurs';
+import AjouterUtilisateur from '../Utilisateurs/AjouterUtilisateur';
 import ErrorPage from '../ErrorPage';
 
 
@@ -17,6 +18,7 @@ function App() {
     <Route path='/login' element={<Login/>}/>
     <Route path='/dashboard' element={<Dashboard/>}/>
     <Route path='/utilisateurs' element={<Utilisateurs/>}/>
+    <Route path='/ajouter-utilisateur' element={<AjouterUtilisateur/>}/>
     <Route path="*" element={<ErrorPage/>}/>
 
     </Routes>
