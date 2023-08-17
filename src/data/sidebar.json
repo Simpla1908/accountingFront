@@ -1,0 +1,96 @@
+[
+    {
+        "title": "Dashboard",
+        "icon": "bi-house-fill",
+        "path": "/dashboard",
+        "perm": "view_customuser"
+
+    },
+    {
+        "title": "Journalisation",
+        "icon": "bi-save-fill",
+        "path": "/journalisation",
+        "perm": "view_customuser"
+
+    },
+    {
+        "title": "Rapports",
+        "icon": "bi-view-list",
+        "childrens": [
+            {
+                "title": "Journal",
+                "path": "/journal",
+                "perm": "view_customuser"
+
+            },
+            {
+                "title": "Grand Livre",
+                "path": "/grandlivre",
+                "perm": "view_customuser"
+
+            },
+            {
+                "title": "Balance",
+                "path": "/balance",
+                "perm": "view_customuser"
+
+            },
+            {
+                "title": "Compte de résultat",
+                "path": "/compteresultat",
+                "perm": "view_customuser"
+
+            },
+            {
+                "title": "Bilan",
+                "path": "/bilan",
+                "perm": "view_customuser"
+
+            }
+        ]
+    },
+    {
+        "title": "Configurations",
+        "icon": "bi-gear-fill",
+        "childrens": [
+            {
+                "title": "Configurations de base",
+                "path": "/configbase",
+                "perm": "view_customuser"
+
+            },
+            {
+                "title": "Exercices",
+                "path": "/exercices",
+                "perm": "view_customuser"
+
+            },
+            {
+                "title": "Comptes",
+                "path": "/comptes",
+                "perm": "view_customuser"
+
+            }
+        ]
+    },
+    {
+        "title": "Administration",
+        "icon": " bi-people",
+        "childrens": [
+            {
+                "title": "Utilisateurs",
+                "path": "/utilisateurs",
+                "perm": "view_customuser"
+
+            },
+            {
+                "title": "Groupes",
+                "path": "/groupes",
+                "perm": "view_customgroup"
+
+            }
+        ]
+    }
+
+  
+]

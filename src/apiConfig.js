@@ -1,0 +1,15 @@
+// apiConfig.js
+const API_BASE_URL = 'http://127.0.0.1:8000/accountingapi';
+
+const API_ROUTES = {
+  SIGNUP: `${API_BASE_URL}/utilisateurs/`,
+  CREER_ENTREPRISE: `${API_BASE_URL}/entreprises/`,
+  LOGIN: `${API_BASE_URL}/utilisateur/login/`,
+  LISTE_UTILISATEURS: `${API_BASE_URL}/utilisateurs_entreprise/`,
+
+
+ 
+  // Autres routes d'API
+};
+
+export default API_ROUTES;
