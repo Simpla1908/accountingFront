@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Pagination, Form ,Button} from "react-bootstrap";
+import { Table, Pagination, Form ,Button, Modal} from "react-bootstrap";
 import { BsPencilSquare,BsTrash } from 'react-icons/bs'; // Import de l'icône
 import { Link } from 'react-router-dom';
 
@@ -17,6 +17,8 @@ const ListeUtilisateurs = () => {
   const [userList, setUserList] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Valeur par défaut
+  const [success,setSuccess]=useState('');
+
 
   useEffect(() => {
     fetchUserData();
@@ -35,7 +37,6 @@ const ListeUtilisateurs = () => {
         `${API_ROUTES.LISTE_UTILISATEURS}${storedUserData.entreprise_id}`,
         config
       );
-      console.log(response.data);
       setUserList(response.data);
     } catch (error) {
       console.error(
@@ -71,6 +72,62 @@ const ListeUtilisateurs = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+
+  //DELETE 
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
+  const openDeleteModal = (user) => {
+
+    setUserToDelete(user.id);
+    setShowDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setUserToDelete(null);
+    setShowDeleteModal(false);
+  };
+
+
+  const deleteUser = async () => {
+    console.log(userToDelete);
+    // Mettez ici votre logique pour supprimer l'utilisateur
+    // Après la suppression, vous pouvez appeler fetchUserData() pour mettre à jour la liste
+
+    try {
+     
+      const token = storedUserData.access;
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+           Authorization: token,
+        },
+      };
+
+      const response = await axios.delete(
+        `${API_ROUTES.SUPPRIMER_UTILISATEUR}${userToDelete}/`,
+        config
+      );
+
+      // Handle success response here (e.g., show success message)
+       console.log(response);
+       closeDeleteModal();
+       fetchUserData();
+       setSuccess({ detail: "La suppression de l'utilisateur s'est fait avec succes." });
+       //Pour gerer la disparution
+       setTimeout(() => {
+        setSuccess({});
+      }, 5000);
+
+  
+    } catch (error) {
+      console.log(error);
+    }
+
+
   };
 
   return (
@@ -109,6 +166,13 @@ const ListeUtilisateurs = () => {
             <div className="col-lg-12">
               <div className="card custom-card">
                 <div className="card-body">
+                <div className="row row-sm">
+                       {success.detail && 
+                        <div className="btn btn-success" style={{opacity: 1, left: '97px', top: '10px',marginBottom:'20px' }}>
+                          <p><b>{success.detail}</b></p>
+                       </div>
+                       }
+                </div>  
                   <div className="table-responsive">
                     <div class="main-header-center">
                       <Form>
@@ -166,12 +230,20 @@ const ListeUtilisateurs = () => {
                               <td>{user.username}</td>
                               <td>{user.email}</td>
                               <td>
-                              <Button variant="primary" size="sm" className="my-2 me-2">
+                              <Link 
+                              className="btn ripple btn-primary btn-sm my-2 me-2"
+                              to={`/modifier-utilisateur/${user.id}`}
+
+                               >
                                 <BsPencilSquare className="me-2" /> Modifier
-                              </Button>
-                              <Button variant="danger" size="sm">
+                              </Link>
+                              <button 
+                               className="btn ripple btn-danger btn-sm my-2 me-2"
+                               onClick={() => openDeleteModal(user)} // Ouvrir le pop-up de confirmation
+
+                               >
                                  <BsTrash className="me-2" /> Supprimer
-                              </Button>
+                              </button >
                               </td>
                             </tr>
                           ))}
@@ -196,6 +268,23 @@ const ListeUtilisateurs = () => {
                           disabled={currentPage === totalPages}
                         />
                       </Pagination>
+                       {/* Pop-up de confirmation de suppression */}
+                      <Modal show={showDeleteModal} onHide={closeDeleteModal}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Confirmation de suppression</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          Êtes-vous sûr de vouloir supprimer l'utilisateur ?
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="secondary" onClick={closeDeleteModal}>
+                            Annuler
+                          </Button>
+                          <Button variant="danger" onClick={deleteUser}>
+                            Confirmer
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
                     </div>
                   </div>
                 </div>

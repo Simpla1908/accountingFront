@@ -7,6 +7,12 @@ const API_ROUTES = {
   LOGIN: `${API_BASE_URL}/utilisateur/login/`,
   LISTE_UTILISATEURS: `${API_BASE_URL}/utilisateurs_entreprise/`,
   LISTE_GROUPES: `${API_BASE_URL}/groups_entreprise/`,
+  DETAILS_UTILISATEUR: `${API_BASE_URL}/utilisateurs/`,
+  MODIFIER_UTILISATEUR: `${API_BASE_URL}/utilisateurs/`,
+  SUPPRIMER_UTILISATEUR: `${API_BASE_URL}/utilisateurs/`,
+
+
+
 
 
 

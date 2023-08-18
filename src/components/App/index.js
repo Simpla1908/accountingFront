@@ -4,6 +4,8 @@ import Login from '../Login';
 import Dashboard from '../Dashboard';
 import Utilisateurs from '../Utilisateurs';
 import AjouterUtilisateur from '../Utilisateurs/AjouterUtilisateur';
+import ModifierUtilisateur from '../Utilisateurs/ModifierUtilisateur';
+
 import ErrorPage from '../ErrorPage';
 
 
@@ -19,6 +21,7 @@ function App() {
     <Route path='/dashboard' element={<Dashboard/>}/>
     <Route path='/utilisateurs' element={<Utilisateurs/>}/>
     <Route path='/ajouter-utilisateur' element={<AjouterUtilisateur/>}/>
+    <Route path='/modifier-utilisateur/:userId' element={<ModifierUtilisateur/>}/>
     <Route path="*" element={<ErrorPage/>}/>
 
     </Routes>

@@ -7,7 +7,6 @@ const Header = () => {
 
   const storedUserDataJSON = localStorage.getItem("userData");
   const storedUserData = JSON.parse(storedUserDataJSON);
-  console.log(storedUserData);
 
 
   const [isProfileDropdownOpen, setProfileDropdownOpen] = useState(false);
