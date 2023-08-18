@@ -16,20 +16,29 @@ const AjouterUtilisateurForm = () => {
 
   const [selectedGroups, setSelectedGroups] = useState([]); // State to hold selected groups
   const [groupOptions, setGroupOptions] = useState([]);
-
-    const [formData, setFormData] = useState({
-      username: "",
-      email: "",
-      password: "",
-      is_superuser: false,
-    });
+  const [errors,setErrors]=useState('');
+  const [success,setSuccess]=useState('');
 
 
-  const handleGroupChange = (selectedOptions) => {
-    setSelectedGroups(selectedOptions);
+  const initialFormData = {
+    username: '',
+    email: '',
+    password: '',
+    is_superuser: false,
+  };
+
+  const [formData, setFormData] =useState(initialFormData);
+
+  const handleGroupChange = (event) => {
+    const selectedValues = Array.from(event.target.selectedOptions, option => option.value);
+    setSelectedGroups(selectedValues);
   };
 
   const handleInputChange = (event) => {
+    setSuccess({}); // Réinitialiser l'état du success
+    setErrors({}); // Réinitialiser l'état des erreurs
+
+
     const { name, value, type, checked } = event.target;
     const newValue = type === "checkbox" ? checked : value;
 
@@ -76,8 +85,10 @@ const AjouterUtilisateurForm = () => {
       email: formData.email,
       password: formData.password,
       is_superuser: formData.is_superuser,
-      groups: selectedGroups.map((group) => group.value),
+      groups: selectedGroups,
     };
+
+
 
     try {
      
@@ -95,10 +106,29 @@ const AjouterUtilisateurForm = () => {
       );
 
       // Handle success response here (e.g., show success message)
-      console.log("User data saved successfully:", response.data);
+       console.log("User data saved successfully:", response.data);
+
+      if (response.status === 201) {
+        console.log("User data saved successfully:", response.data);
+        setFormData(initialFormData); // Réinitialiser le formulaire avec les valeurs vides
+        setErrors({}); // Réinitialiser l'état des erreurs
+        setSuccess({ detail: "L'enregistrement de l'utilisateur s'est fait avec succes." });
+
+      } else {
+        setErrors({ detail: "Une erreur s'est produite lors de la création de l'utilisateur." });
+      }
+      
+
+
     } catch (error) {
-      // Handle error here (e.g., show error message)
-      console.error("Error saving user data:", error);
+      console.log(error);
+      if(error.code=='ERR_NETWORK'){
+        setErrors({ detail: error.message});
+      }else{
+      console.log(error.response.data);
+      const errorResponse = error.response.data;
+      setErrors(errorResponse);
+    }
     }
   };
 
@@ -151,27 +181,49 @@ const AjouterUtilisateurForm = () => {
             </div>
           </div>
 
-          <div class="row row-sm">
-            <div class="col-lg-12 col-md-12">
-              <div class="card custom-card">
-                <div class="card-body">
+          <div className="row row-sm">
+            <div className="col-lg-12 col-md-12">
+              <div className="card custom-card">
+                <div className="card-body">
                 <form onSubmit={handleFormSubmit}>
 
-                  <div class="row row-sm">
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <p class="mg-b-10">Nom</p>
+                <div className="row row-sm">
+                       {success.detail && 
+                        <div className="btn btn-success" style={{opacity: 1, left: '97px', top: '10px',marginBottom:'20px' }}>
+                          <p><b>{success.detail}</b></p>
+                       </div>
+                       }
+                </div>   
+
+                <div className="row row-sm">
+                       {errors.detail && 
+                        <div className="btn btn-danger" style={{opacity: 1, left: '97px', top: '10px',marginBottom:'20px' }}>
+                          <p><b>{errors.detail}</b></p>
+                       </div>
+                       }
+                </div>     
+                  <div className="row row-sm">
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <p className="mg-b-10">Nom</p>
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           name="username"
                           placeholder="Nom"
                           value={formData.username}
                           onChange={handleInputChange}
+                          autoComplete='off'
                         />
                       </div>
+                      {errors.username && 
+                      <div className="btn btn-danger" style={{ width: '100%', opacity: 1, left: '97px', top: '10px' }}>
+                      <p><b>{errors.username[0]}</b></p>
+                      </div>
+                        }
+                        
                     </div>
-                    <div class="col-sm-6">
+                    <div className="col-sm-6">
                       <div className="form-group">
                         <p className="mg-b-10">Email</p>
                         <input
@@ -181,27 +233,43 @@ const AjouterUtilisateurForm = () => {
                           placeholder="Email"
                           value={formData.email}
                           onChange={handleInputChange}
+                          autoComplete='off'
                         />
                       </div>
+                      {errors.email && 
+                      <div className="btn btn-danger" style={{ width: '100%', opacity: 1, left: '97px', top: '10px' }}>
+                      <p><b>{errors.email[0]}</b></p>
+                      </div>
+                        }
                     </div>
                   </div>
 
-                  <div class="row row-sm">
-                    <div class="col-sm-6">
-                    <div class="form-group">
-                        <p class="mg-b-10">Mot de passe</p>
+
+                    
+
+                  <div className="row row-sm">
+                    <div className="col-sm-6">
+                    <div className="form-group">
+                        <p className="mg-b-10">Mot de passe</p>
                         <input
                           type="password"
-                          class="form-control"
+                          className="form-control"
                           name="password"
                           placeholder="Mot de passe"
                           disabled=""
                           value={formData.password}
                           onChange={handleInputChange}
+                          autoComplete='off'
                         />
                       </div>
+
+                      {errors.password && 
+                      <div className="btn btn-danger" style={{ width: '100%', opacity: 1, left: '97px', top: '10px' }}>
+                      <p><b>{errors.password[0]}</b></p>
+                      </div>
+                        }
                     </div>
-                    <div class="col-sm-6">
+                    <div className="col-sm-6">
                       <div className="form-group">
                         <label className="ckbox" style={{ marginTop: '40px' }}>
                           <input 
@@ -217,17 +285,15 @@ const AjouterUtilisateurForm = () => {
                     </div>
                   </div>
 
-                  <div class="row row-sm">
-                    <div class="col-sm-12">
-                    <div class="form-group mb-0">
-                        <p class="mg-b-10">Groupes</p>
-                        <Select
-                          options={groupOptions}
-                          value={selectedGroups}
-                          onChange={handleGroupChange}
-                          isMulti
-                          placeholder="Sélectionnez des groupes..."
-                        />
+                  <div className="row row-sm">
+                    <div className="col-sm-12">
+                    <div className="form-group">
+                        <p className="mg-b-10">Groupes</p>
+                        <select name="groups" id="id_groups" multiple={true} value={selectedGroups} onChange={handleGroupChange} className="form-control">
+                          {groupOptions.map(option => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                          ))}
+                        </select>
                       </div>
                     </div>
                    
