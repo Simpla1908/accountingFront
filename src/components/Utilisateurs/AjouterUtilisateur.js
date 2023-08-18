@@ -1,19 +1,17 @@
 import React from 'react';
-import Header from '../Header';
-import SideBar from '../SideBar';
+import Layout from "../Layout";
 import AjouterUtilisateurForm from '../Utilisateurs/AjouterUtilisateurForm';
-import Footer from '../Footer';
 
 
 
 const AjouterUtilisateur = () => {
   return (
-    <div className="page">
-          <Header/>
-          <SideBar/>
-          <AjouterUtilisateurForm/>
-          <Footer/>
-    </div>
+  
+        <Layout>
+        <div className="page">
+          <AjouterUtilisateurForm />
+        </div>
+        </Layout>
 
 );
 };

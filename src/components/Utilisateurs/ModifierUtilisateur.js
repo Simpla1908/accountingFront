@@ -1,19 +1,16 @@
 import React from 'react';
-import Header from '../Header';
-import SideBar from '../SideBar';
+import Layout from "../Layout";
 import ModifierUtilisateurForm from '../Utilisateurs/ModifierUtilisateurForm';
-import Footer from '../Footer';
 
 
 
 const ModifierUtilisateur = () => {
-  return (
-    <div className="page">
-          <Header/>
-          <SideBar/>
-          <ModifierUtilisateurForm/>
-          <Footer/>
-    </div>
+  return (    
+      <Layout>
+      <div className="page">
+        <ModifierUtilisateurForm />
+      </div>
+      </Layout>
 
 );
 };

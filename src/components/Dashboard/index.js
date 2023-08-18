@@ -1,19 +1,14 @@
-import React from 'react';
-import Header from '../Header';
-import SideBar from '../SideBar';
-import DashboardContent from '../Dashboard/DashboardContent';
-import Footer from '../Footer';
-
+import React from "react";
+import Layout from "../Layout";
+import DashboardContent from "../Dashboard/DashboardContent";
 
 const Dashboard = () => {
   return (
-      		<div className="page">
-                <Header/>
-                <SideBar/>
-                <DashboardContent/>
-                <Footer/>
-          </div>
-
+    <Layout>
+      <div className="page">
+        <DashboardContent />
+      </div>
+    </Layout>
   );
 };
 
