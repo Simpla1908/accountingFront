@@ -12,7 +12,7 @@ const storedUserDataJSON = localStorage.getItem("userData");
 // Convertir la chaîne JSON en objet JavaScript
 const storedUserData = JSON.parse(storedUserDataJSON);
 
-const AjouterUtilisateurForm = () => {
+const AjouterGroupeForm = () => {
 
   const [selectedGroups, setSelectedGroups] = useState([]); // State to hold selected groups
   const [groupOptions, setGroupOptions] = useState([]);
@@ -21,10 +21,7 @@ const AjouterUtilisateurForm = () => {
 
 
   const initialFormData = {
-    username: '',
-    email: '',
-    password: '',
-    is_superuser: false,
+    name: '',
   };
 
   const [formData, setFormData] =useState(initialFormData);
@@ -60,7 +57,7 @@ const AjouterUtilisateurForm = () => {
         };
   
         const response = await axios.get(
-          `${API_ROUTES.LISTE_GROUPES}${storedUserData.entreprise_id}/`,
+          API_ROUTES.ALL_PERMISSIONS,
           config
         );
   
@@ -70,7 +67,7 @@ const AjouterUtilisateurForm = () => {
         }));
         setGroupOptions(fetchedGroupOptions);
       } catch (error) {
-        console.error("Error fetching groups:", error);
+        console.error("Error fetching perms:", error);
       }
     };
   
@@ -81,19 +78,16 @@ const AjouterUtilisateurForm = () => {
   const handleFormSubmit = async (event) => {
 
     const userData = {
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
-      is_superuser: formData.is_superuser,
-      groups: selectedGroups,
+      name: formData.name,
+      permissions: selectedGroups,
     };
 
 
 
     try {
-     
+      const token = storedUserData.access; // Replace with your actual token
       const response = await axios.post(
-        API_ROUTES.SIGNUP,
+        API_ROUTES.AJOUTER_GROUPE,
         JSON.stringify({
           ...userData,
           entreprise: storedUserData.entreprise_id,  // Assurez-vous que le champ "entreprise" correspond à l'ID de l'entreprise enregistrée
@@ -101,18 +95,20 @@ const AjouterUtilisateurForm = () => {
         {
           headers: {
             'Content-Type': 'application/json',
+             Authorization:token, 
+
           },
         }
       );
 
       // Handle success response here (e.g., show success message)
-       console.log("User data saved successfully:", response.data);
+       console.log("Group data saved successfully:", response.data);
 
       if (response.status === 201) {
         console.log("User data saved successfully:", response.data);
         setFormData(initialFormData); // Réinitialiser le formulaire avec les valeurs vides
         setErrors({}); // Réinitialiser l'état des erreurs
-        setSuccess({ detail: "L'enregistrement de l'utilisateur s'est fait avec succes." });
+        setSuccess({ detail: "L'enregistrement du groupe s'est fait avec succes." });
 
       } else {
         setErrors({ detail: "Une erreur s'est produite lors de la création de l'utilisateur." });
@@ -153,7 +149,7 @@ const AjouterUtilisateurForm = () => {
                 className="main-content-title tx-24 mg-b-5"
                 style={{ marginTop: "100px" }}
               >
-                Ajouter utilisateur
+                Ajouter Groupe
               </h2>
             </div>
             <div className="d-flex">
@@ -168,9 +164,9 @@ const AjouterUtilisateurForm = () => {
                 <Link
                   type="button"
                   className="btn btn-white btn-icon-text my-2 me-2"
-                  to="/utilisateurs"
+                  to="/groupes"
                 >
-                  <i className="fe fe-list me-2"></i> Liste des utilisateurs
+                  <i className="fe fe-list me-2"></i> Liste des groupes
                 </Link>
 
                 {/* 
@@ -203,92 +199,37 @@ const AjouterUtilisateurForm = () => {
                        }
                 </div>     
                   <div className="row row-sm">
-                    <div className="col-sm-6">
+                    <div className="col-sm-12">
                       <div className="form-group">
                         <p className="mg-b-10">Nom</p>
                         <input
                           type="text"
                           className="form-control"
-                          name="username"
+                          name="name"
                           placeholder="Nom"
-                          value={formData.username}
+                          value={formData.name}
                           onChange={handleInputChange}
                           autoComplete='off'
                         />
                       </div>
-                      {errors.username && 
+                      {errors.name && 
                       <div className="btn btn-danger" style={{ width: '100%', opacity: 1, left: '97px', top: '10px' }}>
-                      <p><b>{errors.username[0]}</b></p>
+                      <p><b>{errors.name[0]}</b></p>
                       </div>
                         }
                         
                     </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <p className="mg-b-10">Email</p>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="email"
-                          placeholder="Email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          autoComplete='off'
-                        />
-                      </div>
-                      {errors.email && 
-                      <div className="btn btn-danger" style={{ width: '100%', opacity: 1, left: '97px', top: '10px' }}>
-                      <p><b>{errors.email[0]}</b></p>
-                      </div>
-                        }
-                    </div>
+                
                   </div>
 
 
                     
 
-                  <div className="row row-sm">
-                    <div className="col-sm-6">
-                    <div className="form-group">
-                        <p className="mg-b-10">Mot de passe</p>
-                        <input
-                          type="password"
-                          className="form-control"
-                          name="password"
-                          placeholder="Mot de passe"
-                          disabled=""
-                          value={formData.password}
-                          onChange={handleInputChange}
-                          autoComplete='off'
-                        />
-                      </div>
-
-                      {errors.password && 
-                      <div className="btn btn-danger" style={{ width: '100%', opacity: 1, left: '97px', top: '10px' }}>
-                      <p><b>{errors.password[0]}</b></p>
-                      </div>
-                        }
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="ckbox" style={{ marginTop: '40px' }}>
-                          <input 
-                          type="checkbox" 
-                          name="is_superuser"
-                          value={formData.is_superuser}
-                          onChange={handleInputChange}
-
-                          />
-                          <span>Administrateur</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
 
                   <div className="row row-sm">
                     <div className="col-sm-12">
                     <div className="form-group">
-                        <p className="mg-b-10">Groupes</p>
+                        <p className="mg-b-10">Permissions</p>
                         <select name="groups" id="id_groups" multiple={true} value={selectedGroups} onChange={handleGroupChange} className="form-control" style={{ height: '300px'}}>
                           {groupOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.label}</option>
@@ -313,4 +254,4 @@ const AjouterUtilisateurForm = () => {
   );
 };
 
-export default AjouterUtilisateurForm;
+export default AjouterGroupeForm;

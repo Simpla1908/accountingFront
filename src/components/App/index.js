@@ -5,6 +5,10 @@ import Dashboard from '../Dashboard';
 import Utilisateurs from '../Utilisateurs';
 import AjouterUtilisateur from '../Utilisateurs/AjouterUtilisateur';
 import ModifierUtilisateur from '../Utilisateurs/ModifierUtilisateur';
+import Groupes from '../Groupes';
+import AjouterGroupe from '../Groupes/AjouterGroupe';
+import ModifierGroupe from '../Groupes/ModifierGroupe';
+
 import ErrorPage from '../ErrorPage';
 
 
@@ -21,6 +25,10 @@ function App() {
     <Route path='/utilisateurs' element={<Utilisateurs/>}/>
     <Route path='/ajouter-utilisateur' element={<AjouterUtilisateur/>}/>
     <Route path='/modifier-utilisateur/:userId' element={<ModifierUtilisateur/>}/>
+    <Route path='/groupes' element={<Groupes/>}/>
+    <Route path='/ajouter-groupe' element={<AjouterGroupe/>}/>
+    <Route path='/modifier-groupe/:userId' element={<ModifierGroupe/>}/>
+
     <Route path="*" element={<ErrorPage/>}/>
 
     </Routes>

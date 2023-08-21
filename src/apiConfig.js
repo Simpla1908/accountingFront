@@ -10,6 +10,13 @@ const API_ROUTES = {
   DETAILS_UTILISATEUR: `${API_BASE_URL}/utilisateurs/`,
   MODIFIER_UTILISATEUR: `${API_BASE_URL}/utilisateurs/`,
   SUPPRIMER_UTILISATEUR: `${API_BASE_URL}/utilisateurs/`,
+  ALL_PERMISSIONS: `${API_BASE_URL}/all-permissions/`,
+  AJOUTER_GROUPE: `${API_BASE_URL}/groups/`,
+  SUPPRIMER_GROUPE: `${API_BASE_URL}/groups/`,
+  DETAILS_GROUPE: `${API_BASE_URL}/groups/`,
+
+
+
 
 
 
