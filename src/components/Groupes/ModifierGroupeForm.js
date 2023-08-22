@@ -76,13 +76,9 @@ const ModifierGroupeForm = () => {
   const handleFormSubmit = async (event) => {
 
     const userData = {
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
-      is_superuser: formData.is_superuser,
-      groups: selectedGroups,
+      name: formData.name,
+      permissions: selectedGroups
     };
-
 
 
     try {
@@ -96,7 +92,7 @@ const ModifierGroupeForm = () => {
       };
 
       const response = await axios.patch(
-        `${API_ROUTES.MODIFIER_UTILISATEUR}${userId}/`,
+        `${API_ROUTES.MODIFIER_GROUPE}${userId}/`,
         JSON.stringify({
           ...userData
         }),
@@ -118,7 +114,7 @@ const ModifierGroupeForm = () => {
 
     } catch (error) {
       console.log(error);
-      if(error.code=='ERR_NETWORK'){
+      if(error.code==='ERR_NETWORK'){
         setErrors({ detail: error.message});
       }else{
       console.log(error.response.data);
@@ -158,12 +154,13 @@ useEffect(() => {
         `${API_ROUTES.DETAILS_GROUPE}${userId}`,
         config
       );
-        console.log(response);
       // Mettez à jour le state formData avec les informations récupérées
       setFormData({
         name: response.data.name,
       });
-      setSelectedGroups(response.data.permissions.map(group => group.id));
+     // console.log(response.data.permissions);
+      setSelectedGroups(response.data.permissions);
+
     } catch (error) {
       console.error("Erreur lors de la récupération des données  :", error);
     }

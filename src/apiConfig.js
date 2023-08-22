@@ -14,6 +14,8 @@ const API_ROUTES = {
   AJOUTER_GROUPE: `${API_BASE_URL}/groups/`,
   SUPPRIMER_GROUPE: `${API_BASE_URL}/groups/`,
   DETAILS_GROUPE: `${API_BASE_URL}/groups/`,
+  MODIFIER_GROUPE: `${API_BASE_URL}/groups/`,
+
 
 
 

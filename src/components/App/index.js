@@ -27,7 +27,7 @@ function App() {
     <Route path='/modifier-utilisateur/:userId' element={<ModifierUtilisateur/>}/>
     <Route path='/groupes' element={<Groupes/>}/>
     <Route path='/ajouter-groupe' element={<AjouterGroupe/>}/>
-    <Route path='/modifier-groupe/:userId' element={<ModifierGroupe/>}/>
+    <Route exact path='/modifier-groupe/:userId' element={<ModifierGroupe/>}/>
 
     <Route path="*" element={<ErrorPage/>}/>
 
