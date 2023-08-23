@@ -15,14 +15,8 @@ const API_ROUTES = {
   SUPPRIMER_GROUPE: `${API_BASE_URL}/groups/`,
   DETAILS_GROUPE: `${API_BASE_URL}/groups/`,
   MODIFIER_GROUPE: `${API_BASE_URL}/groups/`,
-
-
-
-
-
-
-
-
+  LISTE_EXERCICES: `${API_BASE_URL}/exercices_entreprise/`,
+  AJOUTER_EXERCICE: `${API_BASE_URL}/exercices/`,
 
 
  

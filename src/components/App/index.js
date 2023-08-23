@@ -8,6 +8,8 @@ import ModifierUtilisateur from '../Utilisateurs/ModifierUtilisateur';
 import Groupes from '../Groupes';
 import AjouterGroupe from '../Groupes/AjouterGroupe';
 import ModifierGroupe from '../Groupes/ModifierGroupe';
+import Exercices from '../Exercices';
+import AjouterExercice from '../Exercices/AjouterExercice';
 
 import ErrorPage from '../ErrorPage';
 
@@ -28,6 +30,8 @@ function App() {
     <Route path='/groupes' element={<Groupes/>}/>
     <Route path='/ajouter-groupe' element={<AjouterGroupe/>}/>
     <Route exact path='/modifier-groupe/:userId' element={<ModifierGroupe/>}/>
+    <Route path='/exercices' element={<Exercices/>}/>
+    <Route path='/ajouter-exercice' element={<AjouterExercice/>}/>
 
     <Route path="*" element={<ErrorPage/>}/>
 
