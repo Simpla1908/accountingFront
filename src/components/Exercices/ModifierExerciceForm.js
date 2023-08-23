@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
-
+import { useParams } from "react-router-dom";
 import API_ROUTES from "../../apiConfig";
 // Récupérer la chaîne JSON du localStorage sous la clé "userData"
 const storedUserDataJSON = localStorage.getItem("userData");
 // Convertir la chaîne JSON en objet JavaScript
 const storedUserData = JSON.parse(storedUserDataJSON);
 
-const AjouterExerciceForm = () => {
+const ModifierExerciceForm = () => {
+  const { userId } = useParams(); // Récupérer l'ID de l'utilisateur depuis les paramètres d'URL
 
   const [errors,setErrors]=useState('');
   const [success,setSuccess]=useState('');
@@ -23,10 +23,7 @@ const AjouterExerciceForm = () => {
 
   const [formData, setFormData] =useState(initialFormData);
 
-
   const handleInputChange = (event) => {
-    setSuccess({}); // Réinitialiser l'état du success
-    setErrors({}); // Réinitialiser l'état des erreurs
 
 
     const { name, value, type, checked } = event.target;
@@ -38,6 +35,7 @@ const AjouterExerciceForm = () => {
     });
   };
 
+  
 
   const handleFormSubmit = async (event) => {
 
@@ -45,18 +43,17 @@ const AjouterExerciceForm = () => {
       lib: formData.lib,
       debut: formData.debut,
       fin: formData.fin,
-      annee: new Date(formData.debut).getFullYear(),
+      annee: new Date(formData.debut).getFullYear()
     };
 
     console.log(userData);
 
     try {
       const token = storedUserData.access; // Replace with your actual token
-      const response = await axios.post(
-        API_ROUTES.AJOUTER_EXERCICE,
+      const response = await axios.patch(
+        `${API_ROUTES.MODIFIER_EXERCICE}${userId}/`,
         JSON.stringify({
-          ...userData,
-          entreprise: storedUserData.entreprise_id,  // Assurez-vous que le champ "entreprise" correspond à l'ID de l'entreprise enregistrée
+          ...userData
         }),
         {
           headers: {
@@ -68,12 +65,12 @@ const AjouterExerciceForm = () => {
       );
 
       // Handle success response here (e.g., show success message)
+      console.log(response);
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         console.log("Exercice data saved successfully:", response.data);
-        setFormData(initialFormData); // Réinitialiser le formulaire avec les valeurs vides
         setErrors({}); // Réinitialiser l'état des erreurs
-        setSuccess({ detail: "L'enregistrement de l'exercice s'est fait avec succes." });
+        setSuccess({ detail: "La modification de l'exercice s'est fait avec succes." });
 
       } else {
         setErrors({ detail: "Une erreur s'est produite lors de la création de l'exercice." });
@@ -104,6 +101,43 @@ const AjouterExerciceForm = () => {
       console.error("Error saving user data:", error);
     }
   };
+
+//RECUPERATION DATAS BY ID
+
+
+useEffect(() => {
+  const fetchUserData = async () => {
+    try {
+      // Faites une requête pour récupérer les informations de l'utilisateur à l'aide de userId
+      const token = storedUserData.access;
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+
+      const response = await axios.get(
+        `${API_ROUTES.DETAILS_EXERCICE}${userId}`,
+        config
+      );
+
+      // Mettez à jour le state formData avec les informations récupérées
+      setFormData({
+        lib: response.data.lib,
+        debut: response.data.debut,
+        fin:response.data.fin,
+      });
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données de l'exercice :", error);
+    }
+  };
+
+  fetchUserData(); // Appelez la fonction pour récupérer les données de l'utilisateur lorsque le composant se monte
+}, [userId]);
+
+
+
+
   return (
     <div className="main-content side-content pt-0">
       <div className="main-container container-fluid">
@@ -114,7 +148,7 @@ const AjouterExerciceForm = () => {
                 className="main-content-title tx-24 mg-b-5"
                 style={{ marginTop: "100px" }}
               >
-                Ajouter exercice
+                Modifier exercice
               </h2>
             </div>
             <div className="d-flex">
@@ -163,7 +197,8 @@ const AjouterExerciceForm = () => {
                        </div>
                        }
                 </div>     
-                  <div className="row row-sm">
+               
+                <div className="row row-sm">
                     <div className="col-sm-12">
                       <div className="form-group">
                         <p className="mg-b-10">Libellé</p>
@@ -234,7 +269,7 @@ const AjouterExerciceForm = () => {
                         }
                     </div>
                   </div>
-
+    
                   </form>
 
 
@@ -248,4 +283,4 @@ const AjouterExerciceForm = () => {
   );
 };
 
-export default AjouterExerciceForm;
+export default ModifierExerciceForm;

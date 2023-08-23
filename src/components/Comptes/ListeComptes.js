@@ -11,15 +11,7 @@ const storedUserDataJSON = localStorage.getItem("userData");
 // Convertir la chaîne JSON en objet JavaScript
 const storedUserData = JSON.parse(storedUserDataJSON);
 
-function formatDate(dateString) {
-  const dateObject = new Date(dateString);
-  const day = dateObject.getDate().toString().padStart(2, '0');
-  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
-  const year = dateObject.getFullYear();
-  return `${day}/${month}/${year}`;
-}
-
-const ListeExercices = () => {
+const ListeComptes = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [userList, setUserList] = useState([]);
@@ -42,13 +34,14 @@ const ListeExercices = () => {
       };
 
       const response = await axios.get(
-        `${API_ROUTES.LISTE_EXERCICES}${storedUserData.entreprise_id}`,
+        API_ROUTES.PLAN_COMPTABLE,
         config
       );
+      console.log(response.data);
       setUserList(response.data);
     } catch (error) {
       console.error(
-        "Erreur lors de la récupération des données :",
+        "Erreur lors de la récupération des données des utilisateurs :",
         error
       );
     }
@@ -62,8 +55,8 @@ const ListeExercices = () => {
       fetchUserData();
     } else {
       // If there's a search query, filter the user list accordingly
-      const filtered = userList.filter((exercice) =>
-      exercice.lib.toLowerCase().includes(query.toLowerCase())
+      const filtered = userList.filter((user) =>
+        user.username.toLowerCase().includes(query.toLowerCase())
       );
       setUserList(filtered);
     }
@@ -116,7 +109,7 @@ const ListeExercices = () => {
       };
 
       const response = await axios.delete(
-        `${API_ROUTES.SUPPRIMER_EXERCICE}${userToDelete}/`,
+        `${API_ROUTES.SUPPRIMER_UTILISATEUR}${userToDelete}/`,
         config
       );
 
@@ -124,7 +117,7 @@ const ListeExercices = () => {
        console.log(response);
        closeDeleteModal();
        fetchUserData();
-       setSuccess({ detail: "La suppression de l'exercice s'est fait avec succes." });
+       setSuccess({ detail: "La suppression de l'utilisateur s'est fait avec succes." });
        //Pour gerer la disparution
        setTimeout(() => {
         setSuccess({});
@@ -148,7 +141,7 @@ const ListeExercices = () => {
                 className="main-content-title tx-24 mg-b-5"
                 style={{ marginTop: "100px" }}
               >
-                Liste des exercices
+                Plan des comptes
               </h2>
             </div>
             <div className="d-flex">
@@ -156,13 +149,14 @@ const ListeExercices = () => {
                 < Link
                   type="button"
                   className="btn btn-primary btn-icon-text my-2 me-2"
-                  to="/ajouter-exercice"
+                  to="/ajouter-sous-compte"
                 >
-                  <i className="fe fe-plus-circle me-2"></i>Ajouter
+                  <i className="fe fe-plus-circle me-2"></i>Ajouter sous-compte
                 </Link>
-                {/* <button type="button" className="btn btn-white btn-icon-text my-2 me-2">
-                  <i className="fe fe-filter me-2"></i> Filtrer
+                <button type="button" className="btn btn-white btn-icon-text my-2 me-2">
+                  <i className="fe fe-printer me-2"></i> Imprimer
                 </button> 
+                {/* 
                 <button type="button" className="btn btn-primary my-2 btn-icon-text">
                   <i className="fe fe-download-cloud me-2"></i> Download Report
                 </button> */}
@@ -225,29 +219,29 @@ const ListeExercices = () => {
                       <Table striped bordered hover responsive>
                         <thead>
                           <tr>
-                            <th className="wd-5p">N°</th>
-                            <th className="wd-25p">Libellé </th>
-                            <th className="wd-25p">Période </th>
+                            <th className="wd-5p">Numéro</th>
+                            <th className="wd-25p">Compte </th>
+                            <th className="wd-25p">Classe </th>
                             <th className="wd-20p">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {itemsToShow.map((exercice, index) => (
+                          {itemsToShow.map((compte, index) => (
                             <tr key={index}>
                               <td>{index + 1 + indexOfFirstItem}</td>
-                              <td>{exercice.lib}</td>
-                              <td>{formatDate(exercice.debut)}-{formatDate(exercice.fin)}</td>
+                              <td>{compte.username}</td>
+                              <td>{compte.email}</td>
                               <td>
                               <Link 
                               className="btn ripple btn-primary btn-sm my-2 me-2"
-                              to={`/modifier-exercice/${exercice.id}`}
+                              to={`/modifier-sous-compte/${compte.id}`}
 
                                >
                                 <BsPencilSquare className="me-2" /> Modifier
                               </Link>
                               <button 
                                className="btn ripple btn-danger btn-sm my-2 me-2"
-                               onClick={() => openDeleteModal(exercice)} // Ouvrir le pop-up de confirmation
+                               onClick={() => openDeleteModal(compte)} // Ouvrir le pop-up de confirmation
 
                                >
                                  <BsTrash className="me-2" /> Supprimer
@@ -282,7 +276,7 @@ const ListeExercices = () => {
                           <Modal.Title>Confirmation de suppression</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                          Êtes-vous sûr de vouloir supprimer l'exercice ?
+                          Êtes-vous sûr de vouloir supprimer le sous-compte ?
                         </Modal.Body>
                         <Modal.Footer>
                           <Button variant="secondary" onClick={closeDeleteModal}>
@@ -305,4 +299,4 @@ const ListeExercices = () => {
   );
 };
 
-export default ListeExercices;
+export default ListeComptes;

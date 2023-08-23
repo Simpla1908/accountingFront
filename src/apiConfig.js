@@ -17,6 +17,12 @@ const API_ROUTES = {
   MODIFIER_GROUPE: `${API_BASE_URL}/groups/`,
   LISTE_EXERCICES: `${API_BASE_URL}/exercices_entreprise/`,
   AJOUTER_EXERCICE: `${API_BASE_URL}/exercices/`,
+  SUPPRIMER_EXERCICE: `${API_BASE_URL}/exercices/`,
+  MODIFIER_EXERCICE: `${API_BASE_URL}/exercices/`,
+  DETAILS_EXERCICE: `${API_BASE_URL}/exercices/`,
+  PLAN_COMPTABLE: `${API_BASE_URL}/plancomptable/`,
+
+
 
 
  
