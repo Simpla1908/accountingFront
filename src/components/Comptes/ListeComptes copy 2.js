@@ -15,7 +15,7 @@ const ListeComptes = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [planComptable, setplanComptable] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [itemsPerPage, setItemsPerPage] = useState(5); // Valeur par défaut
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Valeur par défaut
   const [success, setSuccess] = useState("");
 
   useEffect(() => {

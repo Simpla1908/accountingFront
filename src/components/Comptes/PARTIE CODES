@@ -1,0 +1,27 @@
+ {/* Rendu pour les comptes de la catégorie */}
+                                  {categorie.comptes_set.map((compte) => (
+                                    <React.Fragment key={compte.id}>
+                                      <tr>
+                                        <td>{compte.numero}</td>
+                                        <td>{compte.libelle}</td>
+                                        <td>{classe.libelle}</td>
+                                        <td>
+                                        </td>
+                                      </tr>
+
+                                      {/* ... Rendu pour les sous-comptes de ce compte */}
+                                      {compte.souscomptes_set.map(
+                                        (souscompte) => (
+                                          <tr key={souscompte.id}>
+                                            <td>{souscompte.numero}</td>
+                                            <td>{souscompte.libelle}</td>
+                                            <td>{classe.libelle}</td>
+                                            <td>
+                                              {/* Boutons d'action (modifier, supprimer, etc.) */}
+                                            </td>
+                                          </tr>
+                                        )
+                                      )}
+                                    </React.Fragment>
+                                  ))}
+
