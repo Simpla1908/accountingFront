@@ -49,21 +49,22 @@ const ListeComptes = () => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-
+  
     if (query.trim() === "") {
-      // If the search query is empty, fetch the initial  data again
+      // If the search query is empty, fetch the initial data again
       fetchUserData();
     } else {
-
       const filtered = userList.filter((compte) =>
-      compte.compte.toLowerCase().includes(query.toLowerCase())
+        compte.compte.toLowerCase().includes(query.toLowerCase()) ||
+        compte.numero.toString().includes(query) ||
+        compte.classe.toLowerCase().includes(query.toLowerCase())
       );
       setUserList(filtered);
-
     }
-
-    setCurrentPage(1); 
+  
+    setCurrentPage(1);
   };
+  
 
   const totalItems = userList.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
