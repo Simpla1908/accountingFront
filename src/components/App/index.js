@@ -12,6 +12,8 @@ import Exercices from '../Exercices';
 import AjouterExercice from '../Exercices/AjouterExercice';
 import ModifierExercice from '../Exercices/ModifierExercice';
 import Comptes from '../Comptes';
+import AjouterSousCompte from '../Comptes/AjouterSousCompte';
+
 
 import ErrorPage from '../ErrorPage';
 
@@ -36,6 +38,8 @@ function App() {
     <Route path='/ajouter-exercice' element={<AjouterExercice/>}/>
     <Route path='/modifier-exercice/:userId' element={<ModifierExercice/>}/>
     <Route path='/comptes' element={<Comptes/>}/>
+    <Route path='/ajouter-sous-compte' element={<AjouterSousCompte/>}/>
+
 
     <Route path="*" element={<ErrorPage/>}/>
 
