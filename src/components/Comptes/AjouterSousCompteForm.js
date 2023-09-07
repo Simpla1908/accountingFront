@@ -15,14 +15,14 @@ const AjouterSousCompteForm = () => {
   const [errors,setErrors]=useState('');
   const [success,setSuccess]=useState('');
   const [selectedOption, setSelectedOption] = useState(null);
-
-
   const [compteOptions, setCompteOptions] = useState([]);
+
 
   const initialFormData = {
     classe: '',
     categorie: '',
     compteId: '',
+    compteNum: '',
     numsouscompte:'',
     libsouscompte:''
 
@@ -42,6 +42,7 @@ const AjouterSousCompteForm = () => {
       classe: jsonData.classe || '', // Assurez-vous que chaque clé JSON correspond à une propriété formData
       categorie: jsonData.category || '', // Vous pouvez utiliser des valeurs par défaut vides si nécessaire
       compteId: jsonData.id || '',
+      compteNum: jsonData.numero || '',
       numsouscompte: '',
       libsouscompte: '',
     };
@@ -80,7 +81,7 @@ const AjouterSousCompteForm = () => {
         );
   
         const fetchedCompteOptions = response.data
-        .filter((compte) => String(compte.numero).length > 2) // Filtrez les comptes avec des numéros de plus de 2 caractères
+        .filter((compte) => String(compte.numero).length === 3) // Filtrez les comptes avec des numéros de plus de 2 caractères
         .map((compte) => ({
           label: compte.numero + ' ' + compte.compte,
           value: JSON.stringify(compte), // Stockez le JSON complet comme valeur
@@ -96,58 +97,55 @@ const AjouterSousCompteForm = () => {
   }, []);
 
   const handleFormSubmit = async (event) => {
-    console.log(formData);
 
-    // const userData = {
-    //   username: formData.username,
-    //   email: formData.email,
-    //   password: formData.password,
-    //   is_superuser: formData.is_superuser,
-    //   groups: selectedGroups,
-    // };
+    const compteDatas= {
+      libelle: formData.libsouscompte,
+      numero: formData.numsouscompte,
+      compte: formData.compteId,
+      entreprise: storedUserData.entreprise_id
+    };
+
+    console.log(compteDatas);
 
 
+    try {
+      const token = storedUserData.access; // Replace with your actual token
+      const response = await axios.post(
+        API_ROUTES.SOUS_COMPTE,
+        JSON.stringify({...compteDatas}),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+             Authorization:token, 
+          },
+        }
+      );
 
-    // try {
-     
-    //   const response = await axios.post(
-    //     API_ROUTES.SIGNUP,
-    //     JSON.stringify({
-    //       ...userData,
-    //       entreprise: storedUserData.entreprise_id,  // Assurez-vous que le champ "entreprise" correspond à l'ID de l'entreprise enregistrée
-    //     }),
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     }
-    //   );
+       console.log(response);
 
-    //   // Handle success response here (e.g., show success message)
-    //    console.log("User data saved successfully:", response.data);
+      if (response.status === 201) {
+        console.log("Compte data saved successfully:", response.data);
+        setFormData(initialFormData); // Réinitialiser le formulaire avec les valeurs vides
+        setErrors({}); // Réinitialiser l'état des erreurs
+        setSuccess({ detail: "L'enregistrement du compte s'est fait avec succes." });
+        setSelectedOption(null);
 
-    //   if (response.status === 201) {
-    //     console.log("User data saved successfully:", response.data);
-    //     setFormData(initialFormData); // Réinitialiser le formulaire avec les valeurs vides
-    //     setErrors({}); // Réinitialiser l'état des erreurs
-    //     setSuccess({ detail: "L'enregistrement de l'utilisateur s'est fait avec succes." });
-
-    //   } else {
-    //     setErrors({ detail: "Une erreur s'est produite lors de la création de l'utilisateur." });
-    //   }
+      } else {
+        setErrors({ detail: "Une erreur s'est produite lors de la création du compte." });
+      }
       
 
 
-    // } catch (error) {
-    //   console.log(error);
-    //   if(error.code=='ERR_NETWORK'){
-    //     setErrors({ detail: error.message});
-    //   }else{
-    //   console.log(error.response.data);
-    //   const errorResponse = error.response.data;
-    //   setErrors(errorResponse);
-    // }
-    // }
+    } catch (error) {
+      console.log(error);
+      if(error.code=='ERR_NETWORK'){
+        setErrors({ detail: error.message});
+      }else{
+      console.log(error.response.data);
+      const errorResponse = error.response.data;
+      setErrors(errorResponse);
+    }
+    }
   };
 
 
@@ -158,8 +156,9 @@ const AjouterSousCompteForm = () => {
       await handleFormSubmit(); // Call the form submission function
     } catch (error) {
       // Handle error here (e.g., show error message)
-      console.error("Error saving user data:", error);
+      console.error("Error saving comptes data:", error);
     }
+
   };
   return (
     <div className="main-content side-content pt-0">
@@ -289,7 +288,7 @@ const AjouterSousCompteForm = () => {
                         <p className="mg-b-10">Numéro sous - compte</p>
                       <div class="input-group">
 													<div class="input-group-text  border-end-0">
-														906
+                          {formData.compteNum}
 													</div>
 													<input 
                            class="form-control"
@@ -305,9 +304,9 @@ const AjouterSousCompteForm = () => {
 
                          
 
-                      {errors.numsouscompte && 
+                      {errors.numero && 
                       <div className="btn btn-danger" style={{ width: '100%', opacity: 1, left: '97px', top: '10px' }}>
-                      <p><b>{errors.numsouscompte[0]}</b></p>
+                      <p><b>{errors.numero[0]}</b></p>
                       </div>
                         }
                     </div>
@@ -339,9 +338,9 @@ const AjouterSousCompteForm = () => {
 
                       </div>
 
-                      {errors.libsouscompte && 
+                      {errors.libelle && 
                       <div className="btn btn-danger" style={{ width: '100%', opacity: 1, left: '97px', top: '10px' }}>
-                      <p><b>{errors.libsouscompte[0]}</b></p>
+                      <p><b>{errors.libelle[0]}</b></p>
                       </div>
                         }
                     </div>

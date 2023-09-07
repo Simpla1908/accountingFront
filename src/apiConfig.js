@@ -21,6 +21,8 @@ const API_ROUTES = {
   MODIFIER_EXERCICE: `${API_BASE_URL}/exercices/`,
   DETAILS_EXERCICE: `${API_BASE_URL}/exercices/`,
   PLAN_COMPTABLE: `${API_BASE_URL}/plancomptable/`,
+  SOUS_COMPTE: `${API_BASE_URL}/souscomptes/`,
+
 
 
 
