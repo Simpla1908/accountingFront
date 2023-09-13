@@ -83,9 +83,9 @@ const ListeComptes = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-  const openDeleteModal = (user) => {
+  const openDeleteModal = (compte) => {
 
-    setUserToDelete(user.id);
+    setUserToDelete(compte.id);
     setShowDeleteModal(true);
   };
 
@@ -111,7 +111,7 @@ const ListeComptes = () => {
       };
 
       const response = await axios.delete(
-        `${API_ROUTES.SUPPRIMER_UTILISATEUR}${userToDelete}/`,
+        `${API_ROUTES.SOUS_COMPTE}${userToDelete}/`,
         config
       );
 
@@ -119,7 +119,7 @@ const ListeComptes = () => {
        console.log(response);
        closeDeleteModal();
        fetchUserData();
-       setSuccess({ detail: "La suppression de l'utilisateur s'est fait avec succes." });
+       setSuccess({ detail: "La suppression du compte s'est fait avec succes." });
        //Pour gerer la disparution
        setTimeout(() => {
         setSuccess({});
