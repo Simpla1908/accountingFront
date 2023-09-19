@@ -191,7 +191,7 @@ const ListeComptes = () => {
                     type="button" className="btn btn-white my-2 btn-icon-text" 
                     onClick={handleClosePdfTab}
                     >
-                    <i className="fe fe-back me-2"></i>  Retourner
+                    <i className="fa fa-arrow-left me-2"></i>  Retourner
                     </button>}
 
               </div>
