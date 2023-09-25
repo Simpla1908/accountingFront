@@ -22,6 +22,8 @@ const API_ROUTES = {
   DETAILS_EXERCICE: `${API_BASE_URL}/exercices/`,
   PLAN_COMPTABLE: `${API_BASE_URL}/plancomptable/`,
   SOUS_COMPTE: `${API_BASE_URL}/souscomptes/`,
+  DETAILS_ENTREPRISE: `${API_BASE_URL}/entreprises/`,
+
 
 
 

@@ -14,6 +14,7 @@ import ModifierExercice from '../Exercices/ModifierExercice';
 import Comptes from '../Comptes';
 import AjouterSousCompte from '../Comptes/AjouterSousCompte';
 import ModifierSousCompte from '../Comptes/ModifierSousCompte';
+import ConfigBase from '../ConfigBase/';
 import ErrorPage from '../ErrorPage';
 
 
@@ -39,7 +40,7 @@ function App() {
     <Route path='/comptes' element={<Comptes/>}/>
     <Route path='/ajouter-sous-compte' element={<AjouterSousCompte/>}/>
     <Route path='/modifier-sous-compte/:compteId' element={<ModifierSousCompte/>}/>
-
+    <Route path='/ConfigBase' element={<ConfigBase/>}/>
 
 
     <Route path="*" element={<ErrorPage/>}/>
