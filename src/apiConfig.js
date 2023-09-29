@@ -33,4 +33,6 @@ const API_ROUTES = {
   // Autres routes d'API
 };
 
+
+
 export default API_ROUTES;

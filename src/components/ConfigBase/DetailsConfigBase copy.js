@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Select from "react-select";
 import {useParams } from "react-router-dom";
 import API_ROUTES from "../../apiConfig";
-import config from "../../config";
 
 // Récupérer la chaîne JSON du localStorage sous la clé "userData"
 const storedUserDataJSON = localStorage.getItem("userData");
@@ -17,8 +16,6 @@ const DetailsConfigBase = () => {
   const [groupOptions, setGroupOptions] = useState([]);
   const [errors,setErrors]=useState('');
   const [success,setSuccess]=useState('');
-  const [logoDb,setlogoDb]=useState(null);
-
 
 
   const initialFormData = {
@@ -171,6 +168,7 @@ useEffect(() => {
       // Mettez à jour le state formData avec les informations récupérées
       setFormData({
         nom: response.data.nom,
+        logo: response.data.logo,
         adresse: response.data.adresse,
         ville: response.data.ville,
         code_postal: response.data.code_postal,
@@ -182,7 +180,6 @@ useEffect(() => {
         rccm: response.data.rccm,
         taux:response.data.taux,
       });
-      setlogoDb(response.data.logo);
 
     } catch (error) {
       console.error("Erreur lors de la récupération des données  :", error);
@@ -272,11 +269,8 @@ useEffect(() => {
                     <div className="form-group">
                       <p className="mg-b-10">Logo</p>
                       {formData.logo ? (
-                        <img src={URL.createObjectURL(formData.logo)} alt="Logo" width="100" height="100" />
-                      ) : (
-                        <img src={`${config.djangoServerUrl}/${logoDb}`} alt="Logo" width="100" height="100" />
-                      )}
-
+                      <img src={URL.createObjectURL(formData.logo)} alt="Logo" width="100" height="100" />
+                    ) : null}
 
                       <input
                         type="file"
