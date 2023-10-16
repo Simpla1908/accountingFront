@@ -34,7 +34,7 @@ const ListeUtilisateurs = () => {
       };
 
       const response = await axios.get(
-        `${API_ROUTES.LISTE_UTILISATEURS}${storedUserData.entreprise_id}`,
+        `${API_ROUTES.LISTE_UTILISATEURS}${storedUserData.entreprise_id}/`,
         config
       );
       setUserList(response.data);

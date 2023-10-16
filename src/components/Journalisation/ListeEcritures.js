@@ -11,7 +11,15 @@ const storedUserDataJSON = localStorage.getItem("userData");
 // Convertir la chaîne JSON en objet JavaScript
 const storedUserData = JSON.parse(storedUserDataJSON);
 
-const ListeGroupes = () => {
+function formatDate(dateString) {
+  const dateObject = new Date(dateString);
+  const day = dateObject.getDate().toString().padStart(2, '0');
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObject.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+const ListeExercices = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [userList, setUserList] = useState([]);
@@ -34,13 +42,13 @@ const ListeGroupes = () => {
       };
 
       const response = await axios.get(
-        `${API_ROUTES.LISTE_GROUPES}${storedUserData.entreprise_id}/`,
+        `${API_ROUTES.LISTE_EXERCICES}${storedUserData.entreprise_id}`,
         config
       );
       setUserList(response.data);
     } catch (error) {
       console.error(
-        "Erreur lors de la récupération des groupes :",
+        "Erreur lors de la récupération des données :",
         error
       );
     }
@@ -54,8 +62,8 @@ const ListeGroupes = () => {
       fetchUserData();
     } else {
       // If there's a search query, filter the user list accordingly
-      const filtered = userList.filter((user) =>
-        user.name.toLowerCase().includes(query.toLowerCase())
+      const filtered = userList.filter((exercice) =>
+      exercice.lib.toLowerCase().includes(query.toLowerCase())
       );
       setUserList(filtered);
     }
@@ -108,7 +116,7 @@ const ListeGroupes = () => {
       };
 
       const response = await axios.delete(
-        `${API_ROUTES.SUPPRIMER_GROUPE}${userToDelete}/`,
+        `${API_ROUTES.SUPPRIMER_EXERCICE}${userToDelete}/`,
         config
       );
 
@@ -116,7 +124,7 @@ const ListeGroupes = () => {
        console.log(response);
        closeDeleteModal();
        fetchUserData();
-       setSuccess({ detail: "La suppression du groupe s'est fait avec succes." });
+       setSuccess({ detail: "La suppression de l'exercice s'est fait avec succes." });
        //Pour gerer la disparution
        setTimeout(() => {
         setSuccess({});
@@ -140,7 +148,7 @@ const ListeGroupes = () => {
                 className="main-content-title tx-24 mg-b-5"
                 style={{ marginTop: "100px" }}
               >
-                Liste des groupes
+                Liste des écritures
               </h2>
             </div>
             <div className="d-flex">
@@ -148,13 +156,15 @@ const ListeGroupes = () => {
                 < Link
                   type="button"
                   className="btn btn-primary btn-icon-text my-2 me-2"
-                  to="/ajouter-groupe"
+                  to="/ajouter-ecriture"
                 >
-                  <i className="fe fe-plus-circle me-2"></i>Ajouter
+                  <i className="fe fe-plus-circle me-2"></i>Journaliser
                 </Link>
-                {/* <button type="button" className="btn btn-white btn-icon-text my-2 me-2">
+               <button type="button" className="btn btn-white btn-icon-text my-2 me-2">
                   <i className="fe fe-filter me-2"></i> Filtrer
                 </button> 
+
+                  {/*
                 <button type="button" className="btn btn-primary my-2 btn-icon-text">
                   <i className="fe fe-download-cloud me-2"></i> Download Report
                 </button> */}
@@ -218,33 +228,37 @@ const ListeGroupes = () => {
                         <thead>
                           <tr>
                             <th className="wd-5p">N°</th>
-                            <th className="wd-25p">Nom </th>
+                            <th className="wd-25p">Date </th>
+                            <th className="wd-25p">Type de journal </th>
+                            <th className="wd-25p">Réference </th>
+                            <th className="wd-25p">Description </th>
                             <th className="wd-20p">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {itemsToShow.map((user, index) => (
+                          {/* {itemsToShow.map((exercice, index) => (
                             <tr key={index}>
                               <td>{index + 1 + indexOfFirstItem}</td>
-                              <td>{user.name}</td>
+                              <td>{exercice.lib}</td>
+                              <td>{formatDate(exercice.debut)}-{formatDate(exercice.fin)}</td>
                               <td>
                               <Link 
                               className="btn ripple btn-primary btn-sm my-2 me-2"
-                              to={`/modifier-groupe/${user.id}`}
+                              to={`/modifier-exercice/${exercice.id}`}
 
                                >
                                 <BsPencilSquare className="me-2" /> Modifier
                               </Link>
                               <button 
                                className="btn ripple btn-danger btn-sm my-2 me-2"
-                               onClick={() => openDeleteModal(user)} // Ouvrir le pop-up de confirmation
+                               onClick={() => openDeleteModal(exercice)} // Ouvrir le pop-up de confirmation
 
                                >
                                  <BsTrash className="me-2" /> Supprimer
                               </button >
                               </td>
                             </tr>
-                          ))}
+                          ))} */}
                         </tbody>
                       </Table>
                       <Pagination className="justify-content-end">
@@ -272,7 +286,7 @@ const ListeGroupes = () => {
                           <Modal.Title>Confirmation de suppression</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                          Êtes-vous sûr de vouloir supprimer l'utilisateur ?
+                          Êtes-vous sûr de vouloir supprimer l'exercice ?
                         </Modal.Body>
                         <Modal.Footer>
                           <Button variant="secondary" onClick={closeDeleteModal}>
@@ -295,4 +309,4 @@ const ListeGroupes = () => {
   );
 };
 
-export default ListeGroupes;
+export default ListeExercices;
